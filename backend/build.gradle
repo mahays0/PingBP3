@@ -1,0 +1,79 @@
+buildscript {
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+apply plugin: 'spring-boot'
+apply plugin: 'findbugs'
+apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+checkstyle {
+    toolVersion = "6.16.1"
+    configFile = file(project.getParent().projectDir.path + "/config/checkstyle/checkstyle.xml")
+}
+
+checkstyleTest.enabled = false
+
+sourceCompatibility=languageLevel
+targetCompatibility=languageLevel
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("com.google.guava:guava:${guavaVersion}")
+    compile("org.slf4j:slf4j-api:${slfVersion}")
+
+    testCompile("junit:junit:${junitVersion}")
+    testCompile("org.mockito:mockito-core:${mockitoVersion}")
+    testCompile("org.hamcrest:hamcrest-library:${hamcrestVersion}")
+}
+
+test { finalizedBy jacocoTestReport }
+
+processResources {
+    finalizedBy 'addVersionInfo'
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+// With thanks to:
+// http://stackoverflow.com/questions/28065488/how-to-enforce-a-java-compiler-version-with-gradle
+task checkJavaVersion << {
+    if (!JavaVersion.current().isJava8()) {
+        String message = "ERROR: Java 1.8 required but " +
+                JavaVersion.current() +
+                " found. Change your JAVA_HOME environment variable.";
+        throw new IllegalStateException(message);
+    }
+}
+
+task copyVersionInfo(type: Copy) {
+    description = "Copies the version information into the resources directory"
+    group = "bp3"
+    from ("${projectDir}/src/main/resources/bp3.version.properties")
+    into("${buildDir}/resources/main")
+}
+
+task addVersionInfo <<  {
+    def libraryJs = "${buildDir}" + "/resources/main/bp3.version.properties"
+    ant.replace(file: libraryJs, token: '@version@', value: bp3Version)
+    ant.replace(file: libraryJs, token: '@date@', value: String.valueOf(new Date().getTime()))
+    ant.replace(file: libraryJs, token: '@commit@', value: getGitSha())
+}
+
+addVersionInfo.dependsOn copyVersionInfo
+
+build.dependsOn checkJavaVersion

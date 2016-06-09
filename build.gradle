@@ -1,0 +1,13 @@
+plugins {
+    id 'org.ajoberstar.grgit' version '1.4.2'
+}
+apply plugin: 'base'
+
+ext {
+    bp3Version = version
+}
+
+def getGitSha () {
+    def grgit = org.ajoberstar.grgit.Grgit.open()
+    return grgit.head().id
+}
