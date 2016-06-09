@@ -27,6 +27,7 @@ sourceCompatibility=languageLevel
 targetCompatibility=languageLevel
 
 dependencies {
+    compile project(':common')
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("com.google.guava:guava:${guavaVersion}")
     compile("org.slf4j:slf4j-api:${slfVersion}")
@@ -42,7 +43,6 @@ processResources {
     finalizedBy 'addVersionInfo'
     dependsOn ':frontend:buildForBackend'
 }
-
 
 tasks.withType(FindBugs) {
     reports {

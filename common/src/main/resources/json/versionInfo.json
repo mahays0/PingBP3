@@ -1,0 +1,17 @@
+{
+  "id": "/VersionInfo",
+  "description": "Version Info object",
+  "properties": {
+    "build": {
+      "type":"string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format":"date-time"
+    }
+
+  }
+}

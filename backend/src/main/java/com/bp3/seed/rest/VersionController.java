@@ -1,7 +1,7 @@
 package com.bp3.seed.rest;
 
+import com.bp3.seed.common.model.VersionInfo;
 import com.bp3.seed.conf.Constants;
-import com.bp3.seed.model.VersionInfo;
 import com.bp3.seed.service.VersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

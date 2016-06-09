@@ -1,0 +1,64 @@
+apply plugin: 'java'
+apply plugin: 'jsonschema2pojo'
+apply plugin: 'cz.habarta.typescript-generator'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jsonschema2pojo:jsonschema2pojo-gradle-plugin:${js2pVersion}"
+        classpath group: 'cz.habarta.typescript-generator', name: 'typescript-generator-gradle-plugin', version: '1.8.202'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Required if generating equals, hashCode, or toString methods
+    compile 'commons-lang:commons-lang:2.6'
+    // Required if generating JSR-303 annotations
+    compile 'javax.validation:validation-api:1.1.0.CR2'
+    // Required if generating Jackson 2 annotations
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.1.4'
+    // Required if generating JodaTime data types
+    compile 'joda-time:joda-time:2.2'
+}
+
+jsonSchema2Pojo {
+    generateBuilders = true
+
+    includeHashcodeAndEquals = true
+
+    // Whether to use primitives (long, double, boolean) instead of wrapper types where possible
+    // when generating bean properties (has the side-effect of making those properties non-null).
+    usePrimitives = false
+
+    targetPackage = 'com.bp3.seed.common.model'
+
+    // The characters that should be considered as word delimiters when creating Java Bean property
+    // names from JSON property names. If blank or not set, JSON properties will be considered to
+    // contain a single word when creating Java Bean property names.
+    propertyWordDelimiters = [] as char[]
+
+    // Whether to use the java type long (or Long) instead of int (or Integer) when representing the
+    // JSON Schema type 'integer'.
+    useLongIntegers = true
+
+    annotationStyle = 'none'
+
+    includeAdditionalProperties = false
+}
+
+generateTypeScript {
+    outputFile = project(":frontend").projectDir.getPath() + "/src/app/model/generated.d.ts"
+    classPatterns = [
+            'com.bp3.seed.common.model.*'
+    ]
+    jsonLibrary = 'jackson2'
+    outputKind = 'module'
+    outputFileType = 'declarationFile'
+}

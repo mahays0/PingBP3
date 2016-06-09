@@ -1,7 +1,7 @@
 package com.bp3.seed.service;
 
+import com.bp3.seed.common.model.VersionInfo;
 import com.bp3.seed.conf.VersionProperties;
-import com.bp3.seed.model.VersionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +43,9 @@ public class VersionService {
 
     public VersionInfo getVersion() {
         return new VersionInfo()
-                .setBuild(versionProperties.getCommit())
-                .setDate(versionProperties.getDate())
-                .setVersion(versionProperties.getVersion());
+                .withBuild(versionProperties.getCommit())
+                .withDate(versionProperties.getDate())
+                .withVersion(versionProperties.getVersion());
     }
 
 
