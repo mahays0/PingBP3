@@ -1,0 +1,98 @@
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+
+  dependencies {
+    classpath "com.moowork.gradle:gradle-node-plugin:0.12"
+  }
+}
+
+apply plugin: 'com.moowork.node'
+apply plugin: 'base'
+
+ext {
+  mockTarget = project(':backend').getProjectDir().getPath() + "/src/main/resources/public"
+}
+node {
+  download = true
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+// TODO: commented out bc gradle clean was deleting the frontend and public. re-enable correctly.
+//clean.doFirst {
+//  delete "dist"
+//  delete "tmp"
+//  delete "src/app/model/generated.d.ts"
+//}
+
+task npmPrune(type: NpmTask) {
+  description = "Remove unused npm packages"
+  group = "bp3"
+  args = ['prune'];
+  inputs.files file('package.json')
+  outputs.files file('node_modules')
+}
+
+task runServer(type: NodeTask) {
+  description = "Runs ng serve (not something we normally run)"
+  group = "bp3"
+  script = file(projectDir.path + '/node_modules/.bin/ng')
+  args = ['serve'];
+}
+
+// We run tslint directly here since `ng lint` doesn't work and
+//  `npm run lint`s spews extra error info that distracting
+task lint(type: NodeTask) {
+  description = "Runs tslint"
+  group = "bp3"
+  script = file(projectDir.path + '/node_modules/.bin/tslint')
+  args = ['src/**/*.ts', 'e2e/**/*.ts'];
+}
+
+
+task buildApp(type: NodeTask) {
+  description = "Runs the front end build and writes to the dist directory"
+  group = "bp3"
+  dependsOn npmInstall, lint
+  script = file(projectDir.path + '/node_modules/.bin/ng')
+  args = ['build'];
+}
+
+task protractor(type: NodeTask) {
+  description = "Runs protractor e2e tests, the server must already be running"
+  group = "bp3"
+  dependsOn npmInstall
+  dependsOn "webdriverUpdate"
+  script = file(projectDir.path + '/node_modules/.bin/protractor')
+  args = ['config/protractor.conf.js']
+}
+
+task webdriverUpdate(type: NodeTask) {
+  description = "Updates the webdriver tasks"
+  group = "bp3"
+  dependsOn npmInstall
+  script = file(projectDir.path + '/node_modules/.bin/webdriver-manager')
+  args = ['update']
+}
+
+task runUnitTests(type: NodeTask) {
+  description = "Runs the unit tests"
+  group = "bp3"
+  dependsOn npmInstall
+  script = file(projectDir.path + '/node_modules/.bin/ng')
+  args = ['test', '--watch', 'false'];
+}
+
+task watch(type: NodeTask) {
+  description = "Runs the angular build with watch and outputs to the mock server"
+  group = "bp3"
+  dependsOn npmInstall
+  script = file(projectDir.path + '/node_modules/.bin/ng')
+  args = ['build', '--watch', '--output-path', "${mockTarget}"];
+}
+
+npmInstall.dependsOn npmPrune
+check.dependsOn runUnitTests

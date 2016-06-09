@@ -1,3 +1,4 @@
 rootProject.name = 'bp3-angular-spring-seed'
 
 include 'backend'
+include 'frontend'
