@@ -14,7 +14,7 @@ apply plugin: 'com.moowork.node'
 apply plugin: 'base'
 
 ext {
-  mockTarget = project(':backend').getProjectDir().getPath() + "/src/main/resources/public"
+  backendTarget = project(':backend').getProjectDir().getPath() + "/src/main/resources/public"
 }
 node {
   download = true
@@ -86,12 +86,20 @@ task runUnitTests(type: NodeTask) {
   args = ['test', '--watch', 'false'];
 }
 
-task watch(type: NodeTask) {
-  description = "Runs the angular build with watch and outputs to the mock server"
+task buildForBackend(type: NodeTask) {
+  description = "Runs the angular build  and outputs to the server"
   group = "bp3"
   dependsOn npmInstall
   script = file(projectDir.path + '/node_modules/.bin/ng')
-  args = ['build', '--watch', '--output-path', "${mockTarget}"];
+  args = ['build', '--output-path', "${backendTarget}"];
+}
+
+task watch(type: NodeTask) {
+  description = "Runs the angular build with watch and outputs to the server"
+  group = "bp3"
+  dependsOn npmInstall
+  script = file(projectDir.path + '/node_modules/.bin/ng')
+  args = ['build', '--watch', '--output-path', "${backendTarget}"];
 }
 
 npmInstall.dependsOn npmPrune

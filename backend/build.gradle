@@ -40,7 +40,9 @@ test { finalizedBy jacocoTestReport }
 
 processResources {
     finalizedBy 'addVersionInfo'
+    dependsOn ':frontend:buildForBackend'
 }
+
 
 tasks.withType(FindBugs) {
     reports {
