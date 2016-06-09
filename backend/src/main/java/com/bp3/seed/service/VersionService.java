@@ -34,7 +34,7 @@ public class VersionService {
     @PostConstruct
     private void init() {
         VersionInfo info = getVersion();
-        LOGGER.info("Started Trinity\n"
+        LOGGER.info("Started Seed\n"
                 + "\tVersion:" + info.getVersion()
                 + "\n\tBuild:" + info.getBuild()
                 + "\n\tBuild Date:" + info.getDate()
