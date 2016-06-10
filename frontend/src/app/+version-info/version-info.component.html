@@ -1,3 +1,11 @@
-<p>
-  version-info works!
-</p>
+<div *ngIf="versionInfo">
+  <div>
+    version: {{versionInfo.version}}
+  </div>
+  <div>
+    build: {{versionInfo.build}}
+  </div>
+  <div>
+    date: {{versionInfo.date | date:'medium'}}
+  </div>
+</div>

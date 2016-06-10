@@ -30,6 +30,8 @@ public class VersionProperties {
             Long dateTime = Longs.tryParse(dateTimeString);
             if (dateTime != null) {
                 this.date = new Date(dateTime);
+            } else {
+                this.date = new Date();
             }
         }
         return this;
