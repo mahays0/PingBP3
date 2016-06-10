@@ -1,11 +1,14 @@
 <div *ngIf="versionInfo">
-  <div>
-    version: {{versionInfo.version}}
+  <div class="row">
+    <div class="col-md-1">version</div>
+    <div class="col-md-1">{{versionInfo.version}}</div>
   </div>
-  <div>
-    build: {{versionInfo.build}}
+  <div class="row">
+    <div class="col-md-1">build</div>
+    <div class="col-md-1">{{versionInfo.build}}</div>
   </div>
-  <div>
-    date: {{versionInfo.date | date:'medium'}}
+  <div class="row">
+    <div class="col-md-1">date</div>
+    <div class="col-md-3">{{versionInfo.date | date:'medium'}}</div>
   </div>
 </div>
