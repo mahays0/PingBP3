@@ -41,4 +41,5 @@ This is the spring boot based server.
 
 ### frontend
 
-This is the angular 2 based client code.  It's built using angular-cli. See [client readme] (frontend/README.md) for instructions on using the front end
+This is the angular 2 based client code.  It's built using angular-cli. See [client readme] (https://github.com/angular/angular-cli) for instructions on using the front end outside of gradle.  
+See `gradle tasks` for the other front end tasks
