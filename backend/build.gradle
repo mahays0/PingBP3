@@ -44,6 +44,10 @@ processResources {
     dependsOn ':frontend:buildForBackend'
 }
 
+bootRun {
+    addResources = true
+}
+
 tasks.withType(FindBugs) {
     reports {
         xml.enabled = false
