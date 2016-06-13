@@ -29,6 +29,10 @@ Then in another terminal window run:
 
 Browse to http://localhost:8080/
 
+To run the unit tests for the client continuously, use:
+
+`gradle watchUnitTests`
+
 ## App Structure
 
 ### common

@@ -6,8 +6,13 @@ import {
   inject
 } from '@angular/core/testing';
 import { FrontendAppComponent } from '../app/frontend.component';
+import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 
-beforeEachProviders(() => [FrontendAppComponent]);
+
+beforeEachProviders(() => [
+  FrontendAppComponent,
+  ROUTER_FAKE_PROVIDERS
+]);
 
 describe('App: Frontend', () => {
   it('should create the app',
@@ -17,6 +22,6 @@ describe('App: Frontend', () => {
 
   it('should have as title \'frontend works!\'',
       inject([FrontendAppComponent], (app: FrontendAppComponent) => {
-    expect(app.title).toEqual('frontend works!');
+    expect(app.title).toEqual('seed works successfully');
   }));
 });

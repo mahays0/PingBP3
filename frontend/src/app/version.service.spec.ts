@@ -5,10 +5,15 @@ import {
   expect,
   inject
 } from '@angular/core/testing';
+import { HTTP_PROVIDERS } from '@angular/http';
+
 import { VersionService } from './version.service';
 
 describe('Version Service', () => {
-  beforeEachProviders(() => [VersionService]);
+  beforeEachProviders(() => [
+    VersionService,
+    HTTP_PROVIDERS
+  ]);
 
   it('should ...',
       inject([VersionService], (service: VersionService) => {

@@ -10,11 +10,18 @@ import { ComponentFixture, TestComponentBuilder } from '@angular/compiler/testin
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { VersionInfoComponent } from './version-info.component';
+import { HTTP_PROVIDERS } from '@angular/http';
+import {VersionService} from "../version.service";
+
 
 describe('Component: VersionInfo', () => {
   let builder: TestComponentBuilder;
 
-  beforeEachProviders(() => [VersionInfoComponent]);
+  beforeEachProviders(() => [
+    VersionInfoComponent,
+    HTTP_PROVIDERS,
+    VersionService
+  ]);
   beforeEach(inject([TestComponentBuilder], function (tcb: TestComponentBuilder) {
     builder = tcb;
   }));

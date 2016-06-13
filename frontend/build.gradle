@@ -86,6 +86,14 @@ task runUnitTests(type: NodeTask) {
   args = ['test', '--watch', 'false'];
 }
 
+task watchUnitTests(type: NodeTask) {
+  description = "Runs the unit tests continuously"
+  group = "bp3"
+  dependsOn npmInstall
+  script = file(projectDir.path + '/node_modules/.bin/ng')
+  args = ['test', '--watch', 'true'];
+}
+
 task buildForBackend(type: NodeTask) {
   description = "Runs the angular build  and outputs to the server"
   group = "bp3"
